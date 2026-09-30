@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <!-- ════════════════════════════════════════════════════════════
+         LAYER 1: Camera Preview (bottom layer)
+         ════════════════════════════════════════════════════════════ -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:implementationMode="compatible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ════════════════════════════════════════════════════════════
+         LAYER 2: Drawing Canvas (transparent overlay)
+         ════════════════════════════════════════════════════════════ -->
+    <com.example.air_wir_rec.DrawingView
+        android:id="@+id/drawingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ════════════════════════════════════════════════════════════
+         LAYER 3: TOP UI BAR
+         ════════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#CC000000"
+        android:padding="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Main text output -->
+        <TextView
+            android:id="@+id/resultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Text: —"
+            android:textColor="#00FF78"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:ellipsize="start" />
+
+        <!-- Word buffer (Mode 2) -->
+        <TextView
+            android:id="@+id/wordBufferText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#FFFF00"
+            android:textSize="13sp"
+            android:visibility="visible" />
+
+        <!-- Mode tabs row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/tabM1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="M1: CHAR"
+                android:gravity="center"
+                android:padding="5dp"
+                android:background="#00FF78"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="3dp" />
+
+            <TextView
+                android:id="@+id/tabM2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="M2: WORD"
+                android:gravity="center"
+                android:padding="5dp"
+                android:background="#282828"
+                android:textColor="#8C8C8C"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="3dp" />
+
+            <TextView
+                android:id="@+id/tabM3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="M3: SHAPE"
+                android:gravity="center"
+                android:padding="5dp"
+                android:background="#282828"
+                android:textColor="#8C8C8C"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Gesture / status line -->
+        <TextView
+            android:id="@+id/gestureStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="○ No hand"
+            android:textColor="#8C8C8C"
+            android:textSize="11sp"
+            android:layout_marginTop="2dp" />
+
+    </LinearLayout>
+
+    <!-- ════════════════════════════════════════════════════════════
+         GESTURE GUIDE (Top-Right)
+         ════════════════════════════════════════════════════════════ -->
+    <TextView
+        android:id="@+id/gestureGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="#BB101010"
+        android:padding="8dp"
+        android:text="─ GESTURES ─\nIndex ONLY = Draw\nPinch = Predict\nPinky ONLY = Space\nAll open = Clear canvas\nFist = Undo\nThumb+4dn = Clear text\n─ MODE SWITCH (hold 1.2s) ─\nIdx+Pinky = M1:CHAR\nIdx+Mid = M2:WORD\nIdx+Mid+Ring = M3:SHAPE"
+        android:textColor="#8C8C8C"
+        android:textSize="8sp"
+        android:lineSpacingExtra="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar" />
+
+    <!-- ════════════════════════════════════════════════════════════
+         AUTOCORRECT / SUGGESTION BAR (Bottom — Mode 2 only)
+         ════════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:id="@+id/suggestionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E6141414"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AC: "
+            android:textColor="#FFFF00"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="6dp" />
+
+        <HorizontalScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/suggestionContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" />
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
