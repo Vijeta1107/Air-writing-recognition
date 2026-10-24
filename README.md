@@ -1,4 +1,4 @@
-# ✍️ Air-Writing Recognition
+#  Air-Writing Recognition
 
 Write letters, words and shapes **in the air with your finger** — a webcam (or phone camera) tracks your hand, turns the fingertip path into a stroke, and a CNN recognises what you wrote. Gestures replace the keyboard: pinch to confirm, open palm to clear, fist to undo.
 
