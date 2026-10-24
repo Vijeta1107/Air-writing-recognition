@@ -60,6 +60,9 @@ except Exception:
 # ════════════════════════════════════════════════════
 CAM_W, CAM_H   = 1280, 720
 MODEL_PATH     = "air_model.tflite"
+# Fall back to the model bundled with the Android app when running from a fresh clone
+if not os.path.exists(MODEL_PATH):
+    MODEL_PATH = os.path.join("app", "src", "main", "assets", "air_model.tflite")
 DATASET_PATH   = "dataset1"
 CONF_THRESHOLD = 0.55          # lowered from 0.6 — more permissive
 COOLDOWN       = 1.0
@@ -135,7 +138,11 @@ interp.allocate_tensors()
 inp_d = interp.get_input_details()
 out_d = interp.get_output_details()
 print("Model loaded ✔")
-classes = sorted(os.listdir(DATASET_PATH))
+if os.path.isdir(DATASET_PATH):
+    classes = sorted(os.listdir(DATASET_PATH))
+else:
+    # Same order the bundled model was trained on: sorted folder names 0-9, A-Z
+    classes = [str(d) for d in range(10)] + [chr(c) for c in range(ord("A"), ord("Z") + 1)]
 print(f"Classes ({len(classes)}): {classes}")
 
 # ════════════════════════════════════════════════════

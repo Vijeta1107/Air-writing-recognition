@@ -1,0 +1,11 @@
+# Desktop app (air_writing_final_fixed.py) and dataset tool (data_creation.py)
+# Recommended: Python 3.10 – 3.12
+opencv-python>=4.8
+mediapipe==0.10.14        # uses the legacy mp.solutions.hands API
+numpy>=1.24,<2.0
+tensorflow>=2.13          # only tf.lite.Interpreter is used at runtime
+pyspellchecker>=0.7
+pyttsx3>=2.90             # optional: text-to-speech; app runs without it
+
+# Training (colab_train_script.py) additionally needs:
+# scikit-learn>=1.3
