@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Python / Java build output
+__pycache__/
+*.pyc
+*.class
